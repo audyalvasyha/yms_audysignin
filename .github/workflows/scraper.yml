@@ -1,0 +1,30 @@
+name: Automasi Scraper YMS Wings
+
+on:
+  schedule:
+    # Jalan otomatis setiap 1 jam sekali
+    - cron: '0 * * * *'
+  workflow_dispatch: # Agar bisa ditrigger manual via tombol
+
+jobs:
+  scrape-and-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run YMS Scraper Script
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          YMS_COOKIE: ${{ secrets.YMS_COOKIE }}
+        run: python main.py
