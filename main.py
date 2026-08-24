@@ -8,15 +8,17 @@ from datetime import datetime, timezone
 # ==============================================================================
 # 1. SETUP KREDENSIAL
 # ==============================================================================
-# Opsi A: Pakai Environment Variables (Standar untuk GitHub Actions - Aman)
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
 YMS_COOKIE = os.environ.get("YMS_COOKIE")
 
-# Opsi B: Hardcode Sementara (HAPUS TANDA PAGAR DI BAWAH INI KALAU MAU NGETES LOKAL)
-# SUPABASE_URL = "https://xxxxxx.supabase.co"
-# SUPABASE_KEY = "eyJhbGciOiJI...kunci_anon_lu"
-# YMS_COOKIE = "NEXT_LOCALE=id; id_token=eyJhb...cookie_panjang_lu"
+# Pengecekan Pengaman
+if not SUPABASE_URL or not SUPABASE_KEY:
+    print("❌ ERROR CRITICAL: Kredensial Supabase tidak ditemukan!")
+    print(f"Status SUPABASE_URL: {'TERBACA' if SUPABASE_URL else 'KOSONG (BELUM DI-SET)'}")
+    print(f"Status SUPABASE_KEY: {'TERBACA' if SUPABASE_KEY else 'KOSONG (BELUM DI-SET)'}")
+    print("Silakan periksa kembali Repository Secrets di GitHub Settings.")
+    exit(1)
 
 # Inisiasi Supabase Client
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
